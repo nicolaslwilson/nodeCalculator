@@ -5,23 +5,30 @@
     <title>Server Calc</title>
     <script src="vendors/jquery.js" charset="utf-8"></script>
     <script src="scripts/client.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="vendors/base.css">
+    <link rel="stylesheet" href="vendors/pure.css">
+    <link rel="stylesheet" href="views/style.css">
   </head>
   <body>
     <div id="calculator">
         <div id="calcDisplay">
-          <pre>
-            
-          </pre>
+          <pre class="leftDisplay"></pre>
+          <pre class="operatorDisplay"></pre>
+          <pre class="rightDisplay"></pre>
         </div>
-        <div id="numPad">
+        <div id="numPad" class="pure-button-group" role="group">
 
         </div>
-        <button type="button" class="setOperatorButton" data-operator="add">+</button>
-        <button type="button" class="setOperatorButton" data-operator="subtract">-</button>
-        <button type="button" class="setOperatorButton" data-operator="multiply">*</button>
-        <button type="button" class="setOperatorButton" data-operator="divide">/</button>
-        <button type="button" class="calculate">=</button>
-        <button type="button" class="clear" data-operator="divide">Clear</button>
+        <div id="operatorButtons" class="pure-button-group" role="group">
+          <button type="button" class="setOperatorButton pure-button" data-operator="add">+</button>
+          <button type="button" class="setOperatorButton pure-button" data-operator="subtract">-</button>
+          <button type="button" class="setOperatorButton pure-button" data-operator="multiply">*</button>
+          <button type="button" class="setOperatorButton pure-button" data-operator="divide">/</button>
+        </div>
+        <div id="calculateButtons" class="pure-button-group" role="group">
+          <button type="button" class="calculate pure-button pure-button-primary">=</button>
+          <button type="button" class="clear pure-button" data-operator="divide">Clear</button>
+        </div>
     </div>
   </body>
 </html>

@@ -23,6 +23,13 @@ app.post('/calculate', function (req, res) {
 
 app.post('/figlet', function (req, res) {
   console.log('figlet hit', req);
+  figlet.text(req.body.text, {font: '3D-ASCII', horizontalLayout: 'default', verticalLayout: 'default'}, function (err,data) {
+    console.log(data);
+    res.send(data);
+  });
+});
+app.post('/figlet/operator', function (req, res) {
+  console.log('figlet operator hit', req);
   figlet.text(req.body.text, {font: 'Larry 3D', horizontalLayout: 'default', verticalLayout: 'default'}, function (err,data) {
     console.log(data);
     res.send(data);

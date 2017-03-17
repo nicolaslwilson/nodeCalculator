@@ -1,4 +1,4 @@
-var leftOperand = "", rightOperand = "", operator;
+var leftOperand = "", rightOperand = "", operator = "";
 
 $(document).ready(function() {
   appendDOM();
@@ -14,31 +14,27 @@ function appendDOM() {
 }
 function createNumberButton(i) {
   console.log("Creating button ", i);
-  return "<button class='numberButton' id='" + i + "'>" + i + "</button>";
+  return "<button class='numberButton pure-button' id='" + i + "'>" + i + "</button>";
 }
 
 function addEventListeners() {
   $('#numPad').on('click', '.numberButton', inputNumber);
   $('.setOperatorButton').on('click', setOperator);
   $('.calculate').on('click', doCalculation);
+  $('.clear').on('click', clearCalculator);
 }
 
 function updateDisplay () {
-  getFigletText(assembleDisplayString());
+  assembleDisplayString();
 }
 
 function assembleDisplayString () {
-  var displayString;
-  if (operator) {
-    displayString = leftOperand + operatorToSymbol(operator) + rightOperand;
-  }
-  else if (leftOperand) {
-    displayString = leftOperand;
-  }
-  else {
-    displayString = "0";
-  }
-  return displayString;
+  var displayString = {
+    leftHand: leftOperand || "0",
+    operator: operatorToSymbol(operator),
+    rightHand: rightOperand
+  };
+  getFigletText(displayString);
 }
 
 function operatorToSymbol (operator) {
@@ -56,6 +52,8 @@ function operatorToSymbol (operator) {
     case "divide":
       operatorSymbol = "/";
       break;
+    default:
+      operatorSymbol = "";
   }
   return operatorSymbol;
 }
@@ -72,13 +70,23 @@ function inputNumber() {
 
 function setOperator () {
   console.log("set operator: ", $(this).data("operator"));
-  operator = $(this).data("operator");
+  if (leftOperand) {
+    operator = $(this).data("operator");
+  }
+  else {
+    alert("Calculator requires a leftHand operand before selecting an operator.");
+  }
   updateDisplay();
 }
 
 function doCalculation() {
   if (leftOperand && rightOperand && operator) {
-    postCalculation();
+    if (operator === "divide" && rightOperand === "0") {
+      alert("Cannot divide by 0");
+      clearCalculator();
+    } else {
+      postCalculation();
+    }
   } else {
     alert("Please input all required data");
   }
@@ -97,19 +105,43 @@ function postCalculation() {
     success: function (res) {
       leftOperand = res.result;
       rightOperand = "";
-      operator = undefined;
+      operator = "";
       updateDisplay();
     }
   });
 }
 
-function getFigletText (figletText) {
+function clearCalculator () {
+  leftOperand = "";
+  rightOperand = "";
+  operator = "";
+  updateDisplay();
+}
+
+function getFigletText (displayString) {
   console.log('get figlet');
   $.ajax({
     url: '/figlet',
     type: 'POST',
-    data: {text: figletText},
+    data: {text: displayString.leftHand},
     success: function (response) {
-      $('#calcDisplay pre').text(response);
-    }});
+      $('#calcDisplay pre.leftDisplay').text(response);
+    }
+  });
+  $.ajax({
+      url: '/figlet/operator',
+      type: 'POST',
+      data: {text: displayString.operator},
+      success: function (response) {
+        $('#calcDisplay pre.operatorDisplay').text(response);
+      }
+    });
+    $.ajax({
+        url: '/figlet',
+        type: 'POST',
+        data: {text: displayString.rightHand},
+        success: function (response) {
+          $('#calcDisplay pre.rightDisplay').text(response);
+        }
+    });
 }

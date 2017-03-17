@@ -1,0 +1,9 @@
+pre {
+  display: inline-block;
+  color: blue;
+}
+
+.setOperatorButton {
+  background-color: green;
+  color: white;
+}
