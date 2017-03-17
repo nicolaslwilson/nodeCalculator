@@ -8,9 +8,20 @@
   </head>
   <body>
     <div id="calculator">
-        <input type="text" placeholder="Enter Name " value="" id="leftOperand">
-        <input type="text" placeholder="Enter Details" value="" id="rightOperand">
-        <button type="button" class="calculate" data-operator="add">+</button>
+        <div id="calcDisplay">
+          <pre>
+            
+          </pre>
+        </div>
+        <div id="numPad">
+
+        </div>
+        <button type="button" class="setOperatorButton" data-operator="add">+</button>
+        <button type="button" class="setOperatorButton" data-operator="subtract">-</button>
+        <button type="button" class="setOperatorButton" data-operator="multiply">*</button>
+        <button type="button" class="setOperatorButton" data-operator="divide">/</button>
+        <button type="button" class="calculate">=</button>
+        <button type="button" class="clear" data-operator="divide">Clear</button>
     </div>
   </body>
 </html>
