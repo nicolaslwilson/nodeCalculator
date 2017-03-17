@@ -13,6 +13,7 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "figlet": "^1.2.0",
-    "jquery": "^3.2.0"
+    "jquery": "^3.2.0",
+    "mathjs": "^3.10.0"
   }
 }

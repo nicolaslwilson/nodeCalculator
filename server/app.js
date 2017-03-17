@@ -3,6 +3,7 @@ var app = express();
 var path = require ('path');
 var bodyParser = require('body-parser');
 var figlet = require ('figlet');
+var math = require ('mathjs');
 
 app.set('port', 5000);
 
@@ -12,11 +13,12 @@ app.get('/', function (req, res) {
   res.sendFile(path.resolve('server/public/views/index.html'));
 });
 
-
-app.get('/data/:name/:details', function (req, res) {
-  var name = req.params.name;
-  var details = req.params.details;
-  res.send(req.params);
+app.post('/calculate', function (req, res) {
+  console.log(req.body);
+  var operator = req.body.operator;
+  var leftOperand = req.body.leftOperand;
+  var rightOperand = req.body.rightOperand;
+  res.send({result: math[operator](leftOperand,rightOperand)});
 });
 
 app.listen(app.get("port"), function ( ) {
