@@ -1,4 +1,6 @@
-var leftOperand = "", rightOperand = "", operator = "", waitIndex = 0;
+var leftOperand = "", rightOperand = "", operator = "";
+var delayAnimationIntervalID;
+var computationDelay = 3000; //Delay before displaying calculation results in ms.
 
 $(document).ready(function() {
   appendDOM();
@@ -12,6 +14,7 @@ function appendDOM() {
     $('#numPad').prepend(createNumberButton(numArray[i]));
   }
 }
+
 function createNumberButton(i) {
   console.log("Creating button ", i);
   return "<button class='numberButton pure-button pure-u-1-3' id='" + i + "'>" + i + "</button>";
@@ -24,8 +27,16 @@ function addEventListeners() {
   $('.clear').on('click', clearCalculator);
 }
 
+function removeEventListeners() {
+  $('#numPad').off('click', '.numberButton', inputNumber);
+  $('.setOperatorButton').off('click', setOperator);
+  $('.calculate').off('click', doCalculation);
+  $('.clear').off('click', clearCalculator);
+}
+
 function updateDisplay () {
-  assembleDisplayString();
+  var displayString = assembleDisplayString();
+  getFigletText(displayString);
 }
 
 function assembleDisplayString () {
@@ -34,7 +45,7 @@ function assembleDisplayString () {
     operator: operatorToSymbol(operator),
     rightHand: rightOperand
   };
-  getFigletText(displayString);
+  return displayString;
 }
 
 function operatorToSymbol (operator) {
@@ -74,7 +85,7 @@ function setOperator () {
     operator = $(this).data("operator");
   }
   else {
-    alert("Calculator requires a leftHand operand before selecting an operator.");
+    alert("Calculator requires a non-zero initial operand before selecting an operator.");
   }
   updateDisplay();
 }
@@ -84,12 +95,28 @@ function doCalculation() {
     if (operator === "divide" && rightOperand === "0") {
       alert("Cannot divide by 0");
       clearCalculator();
-    } else {
+    }
+    else {
       postCalculation();
     }
-  } else {
-    alert("Please input all required data");
   }
+  else {
+    alertUserEmptyDataField();
+  }
+}
+
+function alertUserEmptyDataField () {
+  var alertString = "";
+  if (!leftOperand) {
+    alertString += "Missing first operand. ";
+  }
+  if (!rightOperand) {
+    alertString += "Missing second operand. ";
+  }
+  if (!operator) {
+    alertString += "Missing operator.";
+  }
+  alert(alertString);
 }
 
 function postCalculation() {
@@ -106,25 +133,35 @@ function postCalculation() {
       leftOperand = res.result;
       rightOperand = "";
       operator = "";
-      $('#calcDisplay').css({"overflow": "hidden"});
-      var calc = setInterval(function () {
-        var waitString = "Calculating . . . Calculating . . . ";
-        if (waitIndex < waitString.length/2) {
-          waitIndex++;
-        }
-        else {
-          waitIndex = 0;
-        }
-        // console.log(waitString.slice(index, index+7));
-        getFigletText({leftHand: waitString.slice(waitIndex, waitIndex+10), operator: "", rightHand: ""});
-      }, 200);
-      setTimeout(function () {
-        clearInterval(calc);
-        $('#calcDisplay').css({"overflow": "auto"});
-        updateDisplay();
-      }, 3000);
+      var delayAnimationIntervalID = computingDelayAnimation("COMPUTING . . . ");
+      setTimeout(endDelay, computationDelay);
     }
   });
+}
+
+function computingDelayAnimation(message) {
+  var waitIndex = 0;
+  $('#calcDisplay').css({"overflow": "hidden"});
+  $('button').toggleClass('pure-button-disabled');
+  delayAnimationIntervalID = setInterval(function () {
+    var waitString = message + message;
+    if (waitIndex < waitString.length/2) {
+      waitIndex++;
+    }
+    else {
+      waitIndex = 0;
+    }
+    // console.log(waitString.slice(index, index+7));
+    getFigletText({leftHand: waitString.slice(waitIndex, waitIndex+10), operator: "", rightHand: ""});
+  }, 200);
+  return delayAnimationIntervalID;
+}
+
+function endDelay() {
+  clearInterval(delayAnimationIntervalID);
+  $('#calcDisplay').css({"overflow": "scroll"});
+  $('button').toggleClass('pure-button-disabled');
+  updateDisplay();
 }
 
 function clearCalculator () {
