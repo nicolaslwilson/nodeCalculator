@@ -1,9 +1,41 @@
+#calculator {
+  max-width: 780px;
+  margin: 0 auto;
+
+}
+
+#calcDisplay {
+  text-align: right;
+  border: 1px solid blue;
+  margin: 15px;
+}
+
+
+
 pre {
   display: inline-block;
   color: blue;
 }
 
+.pure-button {
+  border: 1px solid rgba(0,0,0,0.03);
+  border-radius: 0;
+}
+
+
 .setOperatorButton {
   background-color: green;
   color: white;
+}
+
+@media (min-width: 650px) {
+  #buttonContainer {
+    margin: 0 15%;
+  }
+}
+
+@media (min-width: 480px) {
+  #buttonContainer {
+    margin: 0 7%;
+  }
 }

@@ -7,14 +7,14 @@ $(document).ready(function() {
 });
 
 function appendDOM() {
-  var numArray = [1,2,3,4,5,6,7,8,9,0];
+  var numArray = [0,9,8,7,6,5,4,3,2,1];
   for (var i = 0; i < numArray.length; i++) {
-    $('#numPad').append(createNumberButton(numArray[i]));
+    $('#numPad').prepend(createNumberButton(numArray[i]));
   }
 }
 function createNumberButton(i) {
   console.log("Creating button ", i);
-  return "<button class='numberButton pure-button' id='" + i + "'>" + i + "</button>";
+  return "<button class='numberButton pure-button pure-u-1-3' id='" + i + "'>" + i + "</button>";
 }
 
 function addEventListeners() {
