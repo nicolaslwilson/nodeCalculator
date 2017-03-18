@@ -1,4 +1,4 @@
-var leftOperand = "", rightOperand = "", operator = "";
+var leftOperand = "", rightOperand = "", operator = "", waitIndex = 0;
 
 $(document).ready(function() {
   appendDOM();
@@ -106,7 +106,23 @@ function postCalculation() {
       leftOperand = res.result;
       rightOperand = "";
       operator = "";
-      updateDisplay();
+      $('#calcDisplay').css({"overflow": "hidden", "height": "218px"});
+      var calc = setInterval(function () {
+        var waitString = "Calculating . . . Calculating . . . ";
+        if (waitIndex < waitString.length/2) {
+          waitIndex++;
+        }
+        else {
+          waitIndex = 0;
+        }
+        // console.log(waitString.slice(index, index+7));
+        getFigletText({leftHand: waitString.slice(waitIndex, waitIndex+10), operator: "", rightHand: ""});
+      }, 200);
+      setTimeout(function () {
+        clearInterval(calc);
+        $('#calcDisplay').css({"overflow": "auto", "height": "auto"});
+        updateDisplay();
+      }, 10000);
     }
   });
 }
