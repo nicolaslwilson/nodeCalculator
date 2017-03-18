@@ -106,7 +106,7 @@ function postCalculation() {
       leftOperand = res.result;
       rightOperand = "";
       operator = "";
-      $('#calcDisplay').css({"overflow": "hidden", "height": "218px"});
+      $('#calcDisplay').css({"overflow": "hidden"});
       var calc = setInterval(function () {
         var waitString = "Calculating . . . Calculating . . . ";
         if (waitIndex < waitString.length/2) {
@@ -120,9 +120,9 @@ function postCalculation() {
       }, 200);
       setTimeout(function () {
         clearInterval(calc);
-        $('#calcDisplay').css({"overflow": "auto", "height": "auto"});
+        $('#calcDisplay').css({"overflow": "auto"});
         updateDisplay();
-      }, 10000);
+      }, 3000);
     }
   });
 }

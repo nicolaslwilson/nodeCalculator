@@ -8,9 +8,9 @@
   text-align: right;
   border: 1px solid blue;
   margin: 15px;
+  height: 218px;
+  overflow: scroll;
 }
-
-
 
 pre {
   display: inline-block;
