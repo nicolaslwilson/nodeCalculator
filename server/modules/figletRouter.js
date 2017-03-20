@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var figlet = require ('figlet');
 
+//Takes a GET request from client.js and turns a string of text into ASCII Art based the specified FIGfont.
 router.get('/:font/:text', function (req, res) {
   var text = req.params.text;
   var font = req.params.font;

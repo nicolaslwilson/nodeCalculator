@@ -4,6 +4,10 @@
 
 }
 
+#calcTitle {
+  font-style: italic;
+}
+
 #calcDisplay {
   text-align: right;
   border: 1px solid blue;
