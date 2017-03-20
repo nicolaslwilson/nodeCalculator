@@ -16,7 +16,6 @@ function appendDOM() {
 }
 
 function createNumberButton(i) {
-  console.log("Creating button ", i);
   return "<button class='numberButton pure-button pure-u-1-3' id='" + i + "'>" + i + "</button>";
 }
 
@@ -36,7 +35,9 @@ function removeEventListeners() {
 
 function updateDisplay () {
   var displayString = assembleDisplayString();
-  getFigletText(displayString);
+  figletRequest(displayString.leftHand, '3D-ASCII', '#calcDisplay pre.leftDisplay');
+  figletRequest(displayString.operator, 'Larry 3D', '#calcDisplay pre.operatorDisplay');
+  figletRequest(displayString.rightHand, '3D-ASCII', '#calcDisplay pre.rightDisplay');
 }
 
 function assembleDisplayString () {
@@ -61,7 +62,7 @@ function operatorToSymbol (operator) {
       operatorSymbol = "X";
       break;
     case "divide":
-      operatorSymbol = "/";
+      operatorSymbol = "%2F";
       break;
     default:
       operatorSymbol = "";
@@ -130,10 +131,9 @@ function postCalculation() {
     url: "/calculate",
     data: calculationData,
     success: function (res) {
+      clearCalculator();
       leftOperand = res.result;
-      rightOperand = "";
-      operator = "";
-      var delayAnimationIntervalID = computingDelayAnimation("COMPUTING . . . ");
+      computingDelayAnimation("COMPUTING . . . ");
       setTimeout(endDelay, computationDelay);
     }
   });
@@ -143,6 +143,7 @@ function computingDelayAnimation(message) {
   var waitIndex = 0;
   $('#calcDisplay').css({"overflow": "hidden"});
   $('button').toggleClass('pure-button-disabled');
+  removeEventListeners();
   delayAnimationIntervalID = setInterval(function () {
     var waitString = message + message;
     if (waitIndex < waitString.length/2) {
@@ -152,15 +153,15 @@ function computingDelayAnimation(message) {
       waitIndex = 0;
     }
     // console.log(waitString.slice(index, index+7));
-    getFigletText({leftHand: waitString.slice(waitIndex, waitIndex+10), operator: "", rightHand: ""});
+    figletRequest(waitString.slice(waitIndex, waitIndex+10), "3D-ASCII", '#calcDisplay pre.leftDisplay');
   }, 200);
-  return delayAnimationIntervalID;
 }
 
 function endDelay() {
   clearInterval(delayAnimationIntervalID);
   $('#calcDisplay').css({"overflow": "scroll"});
   $('button').toggleClass('pure-button-disabled');
+  addEventListeners();
   updateDisplay();
 }
 
@@ -171,30 +172,18 @@ function clearCalculator () {
   updateDisplay();
 }
 
-function getFigletText (displayString) {
-  console.log('get figlet');
-  $.ajax({
-    url: '/figlet',
-    type: 'POST',
-    data: {text: displayString.leftHand},
-    success: function (response) {
-      $('#calcDisplay pre.leftDisplay').text(response);
-    }
-  });
-  $.ajax({
-      url: '/figlet/operator',
-      type: 'POST',
-      data: {text: displayString.operator},
+function figletRequest (text, font, target) {
+  if (text) {
+    var requestURL = '/figlet/' + font + '/' + text;
+    $.ajax({
+      url: requestURL,
+      type: 'GET',
       success: function (response) {
-        $('#calcDisplay pre.operatorDisplay').text(response);
+        $(target).text(response);
       }
     });
-    $.ajax({
-        url: '/figlet',
-        type: 'POST',
-        data: {text: displayString.rightHand},
-        success: function (response) {
-          $('#calcDisplay pre.rightDisplay').text(response);
-        }
-    });
+  }
+  else {
+    $(target).text("");
+  }
 }

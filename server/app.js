@@ -3,6 +3,7 @@ var app = express();
 var path = require ('path');
 var bodyParser = require('body-parser');
 var figlet = require ('figlet');
+var figletRouter = require ('./modules/figletRouter.js');
 var math = require ('mathjs');
 
 app.set('port', 5000);
@@ -21,21 +22,10 @@ app.post('/calculate', function (req, res) {
   res.send({result: math[operator](leftOperand,rightOperand)});
 });
 
-app.post('/figlet', function (req, res) {
-  console.log('figlet hit', req);
-  figlet.text(req.body.text, {font: '3D-ASCII', horizontalLayout: 'default', verticalLayout: 'default'}, function (err,data) {
-    console.log(data);
-    res.send(data);
-  });
-});
-app.post('/figlet/operator', function (req, res) {
-  console.log('figlet operator hit', req);
-  figlet.text(req.body.text, {font: 'Larry 3D', horizontalLayout: 'default', verticalLayout: 'default'}, function (err,data) {
-    console.log(data);
-    res.send(data);
-  });
-});
+app.use('/figlet', figletRouter.router);
 
 app.listen(app.get("port"), function ( ) {
-    console.log("Listening on port: ", "\n" + figlet.textSync(app.get("port"), {font: "3D-ASCII"}));
+    figletRouter.figlet.text(app.get("port"), {font: "3D-ASCII"}, function (err, data) {
+      console.log("Listening on port: ", "\n" + data);
+    } );
 });
