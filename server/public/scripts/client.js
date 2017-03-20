@@ -117,12 +117,23 @@ function operatorToSymbol (operator) {
  */
 function inputNumber() {
   console.log("input: ", $(this).attr('id'));
+  var num = $(this).attr('id');
   if (operator) {
-    rightOperand += $(this).attr('id');
+    rightOperand = concatenateNumberString(rightOperand, num);
   } else {
-    leftOperand += $(this).attr('id');
+    leftOperand = concatenateNumberString(leftOperand, num);
   }
   updateDisplay();
+}
+
+function concatenateNumberString (operand, num) {
+  if (operand === "0") {
+    operand = num;
+  }
+  else {
+    operand += num;
+  }
+  return operand;
 }
 
 /**
