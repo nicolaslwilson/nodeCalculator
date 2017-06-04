@@ -100,3 +100,8 @@ Temporary Items
 doc/
 
 # End of jsdoc
+# server/public
+
+server/public/
+
+# end of server/public/

@@ -10,16 +10,16 @@ module.exports = function(grunt) {
     copy: {
       jquery: {
         expand: true,
-        cwd: "node_modules/",
-        src: ["jquery/dist/jquery.js"],
-        dest: "server/public/vendors/"
+        cwd: "node_modules/jquery/dist/",
+        src: ["jquery.js"],
+        dest: "server/public/vendors/jquery/"
       },
       pure: {
         expand: true,
-        cwd: "node_modules/",
-        src: ["purecss/build/base.css",
-              "purecss/build/pure.css"],
-        dest: "server/public/vendors/"
+        cwd: "node_modules/purecss/build/",
+        src: ["base.css",
+              "pure.css"],
+        dest: "server/public/vendors/purecss/"
       },
       html: {
         expand: true,
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
     },
     jsdoc : {
         dist : {
-            src: "server/public/scripts/client.js",
+            src: "client/scripts/client.js",
             options: {
                 destination: 'doc'
             }
@@ -61,5 +61,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-jsdoc');
 
-  grunt.registerTask('default', ['jsdoc']);
+  grunt.registerTask('default', ['uglify', 'copy', 'jsdoc', 'watch']);
 };
