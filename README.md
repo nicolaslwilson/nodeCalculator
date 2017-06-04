@@ -21,3 +21,11 @@ The assignment for this challenge was to build a server-side calculator along wi
 ## Preview
 
 ![preview](expessjscalcscreenshot.png)
+
+## Getting Started
+
+To run the calculator locally clone the repository, then simply run `npm install`, `grunt`, and `npm start`. The server will be running on localhost:5000.
+
+## Documentation
+
+After running `grunt` a jsdoc folder can be found in `doc/`.
