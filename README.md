@@ -6,9 +6,13 @@ The assignment for this challenge was to build a server-side calculator along wi
 
 ## Technologies Used
 
-* NodeJS
-* Express
-* HTML
-* CSS
-* JavaScript
-* jQuery
+* Server-side
+  * NodeJS
+  * Express
+  * [Figlet.js](https://www.npmjs.com/package/figlet)
+  * [Math.js](http://mathjs.org/)
+* Front-end
+  * HTML
+  * CSS
+  * JavaScript
+  * jQuery
