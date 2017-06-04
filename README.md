@@ -17,3 +17,7 @@ The assignment for this challenge was to build a server-side calculator along wi
   * JavaScript
   * jQuery
   * [Pure.css](https://purecss.io/)
+
+## Preview
+
+![preview](expessjscalcscreenshot.png)
