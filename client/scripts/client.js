@@ -11,7 +11,6 @@ $(document).ready(function() {
 /**
  * Appends numPad button elements to DOM
  * @function appendDOM
- * @returns
  */
 function appendDOM() {
   var numArray = [0,9,8,7,6,5,4,3,2,1];
